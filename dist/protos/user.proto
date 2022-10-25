@@ -3,11 +3,11 @@ package UserService;
 service UserService {
     
     rpc getUserById (UId) returns (User) {}
-    rpc getAllUsers (Empty) returns (stream User) {}
+    rpc getAllUsers (Empty) returns (UserList) {}
     rpc topup (TopupReq) returns (TopupRes) {}
     rpc pay (PayReq) returns (PayRes) {}
     rpc getUserByEmail (Email) returns (User) {}
-    rpc createUser(User) returns (User) {}
+    rpc createUser(CreateUserReq) returns (User) {}
     rpc updateUser (UpdateReq) returns (User) {}
     rpc deleteUser (UId) returns (deleteRes) {}
     rpc login (Login) returns (AcessToken) {}
@@ -50,6 +50,9 @@ service UserService {
     string address = 11;
   }
 
+  message UserList {
+    repeated User users=1;
+  }
 
   message TopupRes{
     optional string message =1;
@@ -68,16 +71,14 @@ service UserService {
   message UpdateReq{
     
     string id =1;
-    PartUser mergeData=2;
-    message PartUser{
-    optional string username = 1;
-    optional string firstName = 2;
-    optional string lastName = 3;
-    optional string phoneNumber = 4;
-    optional string address = 5;
+    optional string username = 2;
+    optional string firstName = 3;
+    optional string lastName = 4;
+    optional string phoneNumber = 5;
+    optional string address = 6;
   }
     
-  }
+  
 
 message Login {
   string email =1;
@@ -86,4 +87,15 @@ message Login {
 
 message AcessToken{
   string accessToken =1;
+}
+
+message CreateUserReq{
+    string username = 1;
+    string email = 2;
+    string password = 3;
+    string firstName = 4;
+    string lastName = 5;
+    uint32 money = 6;
+    string phoneNumber = 7;
+    string address = 8;
 }

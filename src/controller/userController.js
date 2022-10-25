@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import userRepo from "../repo/userRepo";
+import userRepo from "../repo/userStub";
 const { getAllUsers, topup , pay, getUserById, createUser, updateUser, deleteUser, getUserByEmail} = userRepo
 
-const loginLogic = async (email, password) => {
-    const user = await getUserByEmail(email)
+const loginLogic = async (user, password) => {
+    
     if (user == null) {
       throw new Error("User not found");
     }

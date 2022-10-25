@@ -1,4 +1,3 @@
-declare const loginLogic: (email: any, password: any) => Promise<{
+export function loginLogic(user: any, password: any): Promise<{
     accessToken: any;
 }>;
-export { loginLogic };

@@ -1,12 +1,11 @@
-import { myDataSource } from "./app-data-source";
 import express from "express";
-import { User } from "./entity/user.entity";
+import userStub from "repo/userStub";
+
 import userRoute from "./router/user";
-import userRepo from "./repo/userRepo";
-import { loginLogic } from "./controller/userController";
+
 const PORT = process.env.PORT;
 const JWT_SECRET = process.env.JWT_SECRET;
-import { getListUsers } from "./stub"
+
 //express
 // myDataSource
 //   .initialize()
@@ -26,7 +25,7 @@ app.use(express.json());
 
 app.use(userRoute);
 
-app.listen(PORT, async () => {console.log("server listening on PORT : " + PORT);
-    await getListUsers(()=>console.log("end"))});
-    
-  
+app.listen(PORT, async () => {
+  console.log("server listening on PORT : " + PORT);
+ 
+});
