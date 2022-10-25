@@ -6,6 +6,7 @@ import { Request, Response } from "express";
 import userRepo from "../repo/userStub";
 import { loginLogic } from "../controller/userController";
 import userStub from "../repo/userStub";
+import { PublishMessage } from "../util/publishReview";
 
 const {
   getAllUsers,
@@ -156,6 +157,12 @@ router.put(
   }
 );
 
+router.delete("/users/:id", async function (req: any, res: any) {
+  try {
+    const results = await deleteUser({ id: req.params.id });
+    res.send("success");
+  } catch (error) {
+    res.status(500).send("error");
 router.delete("/users/:id",authenticateToken, async function (req: any, res: any) {
   if (req.user.id == req.params.id) {
     userStub.stub.deleteUser(
@@ -172,4 +179,16 @@ router.delete("/users/:id",authenticateToken, async function (req: any, res: any
     res.status(400).send({error:"Token Invalid"})
   }
 });
+
+router.post("/reviews", async function (req: Request, res: Response) {
+  try {
+    const data = req.body;
+    console.log(data);
+    await PublishMessage(data);
+    res.send("success");
+  } catch (error) {
+    res.status(500).send("error");
+  }
+});
+
 export = router;
