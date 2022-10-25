@@ -6,6 +6,7 @@ import { Request, Response } from "express";
 import userRepo from "../repo/userStub";
 import { loginLogic } from "../controller/userController";
 import userStub from "../repo/userStub";
+import { PublishMessage } from "../util/publishReview";
 
 const {
   getAllUsers,
@@ -132,4 +133,16 @@ router.delete("/users/:id", async function (req: any, res: any) {
     res.status(500).send("error");
   }
 });
+
+router.post("/reviews", async function (req: Request, res: Response) {
+  try {
+    const data = req.body;
+    console.log(data);
+    await PublishMessage(data);
+    res.send("success");
+  } catch (error) {
+    res.status(500).send("error");
+  }
+});
+
 export = router;
