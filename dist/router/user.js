@@ -34,13 +34,13 @@ router.post("/users/topup", authorization_1.authenticateToken, (req, res) => tsl
         try {
             userStub_2.default.stub.topup({ id: req.user.id, amount: req.body.amount }, (err, data) => {
                 if (!err) {
-                    res.send({ data });
+                    res.send(data);
                 }
                 res.status(500).send(err);
             });
         }
         catch (error) {
-            res.status(400).send("Topup not successful");
+            res.status(400).send("Topup unsuccessful");
         }
     }
     else {
@@ -55,18 +55,25 @@ router.post("/users/pay", authorization_1.authenticateToken, (req, res) => tslib
             amount: req.body.amount,
         }, (err, data) => {
             if (!err) {
-                res.send({ data });
+                res.send(data);
             }
-            res.status(500).send(err);
+            res.status(500).send({ error: "top up unsuccessfull" });
         });
     }
     else {
         res.status(400).send("Invalid Token");
     }
 }));
-router.get("/users/:id", function (req, res) {
+router.get("/users/:id", authorization_1.authenticateToken, function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const user = yield getUserById(req.params.id);
+        userStub_2.default.stub.getUserById({ id: req.body.id }, (err, data) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!err) {
+                const nonSenstive = (({ username, firstName, lastName, money, email, phoneNumber, address }) => ({ username, firstName, lastName, money, email, phoneNumber, address }))(data);
+                res.send(nonSenstive);
+            }
+            res.status(500).send(err);
+        }));
         // const nonSensitiveData = {firstName:user.firstName,lastName:user.lastName}
         return res.send(user);
     });
@@ -84,7 +91,7 @@ router.post("/users/login", (req, res) => tslib_1.__awaiter(void 0, void 0, void
     }
     catch (error) {
         console.log(error);
-        res.status(500).send(error);
+        // res.status(500).send(error);
     }
 }));
 router.post("/users", function (req, res) {
@@ -94,28 +101,46 @@ router.post("/users", function (req, res) {
             const salt = yield bcrypt_1.default.genSalt();
             const hashedPassword = yield bcrypt_1.default.hash(req.body.password, salt);
             const tempUser = Object.assign(Object.assign({}, req.body), { password: hashedPassword });
-            const results = yield createUser(tempUser);
-            return res.send(results);
-        }
-        catch (error) {
-            res.status(500).send(error.code || error);
-        }
-    });
-});
-router.put("/users/:id", function (req, res) {
-    return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        const results = yield updateUser(Object.assign({ id: req.params.id }, req.body));
-        return res.send(results);
-    });
-});
-router.delete("/users/:id", function (req, res) {
-    return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        try {
-            const results = yield deleteUser({ id: req.params.id });
-            res.send("success");
+            console.log(tempUser);
+            userStub_2.default.stub.createUser(tempUser, (err, data) => {
+                if (!err) {
+                    res.send(data);
+                }
+                res.status(500).send({ error: "user creation failed" });
+            });
         }
         catch (error) {
             res.status(500).send("error");
+        }
+    });
+});
+router.put("/users/:id", authorization_1.authenticateToken, function (req, res) {
+    return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        if (req.user.id == req.params.id) {
+            userStub_2.default.stub.updateUser(Object.assign({ id: req.params.id }, req.body), (err, data) => {
+                if (!err) {
+                    res.send(data);
+                }
+                res.status(500).send({ error: "user creation failed" });
+            });
+        }
+        else {
+            res.status(400).send({ error: "Token Invalid" });
+        }
+    });
+});
+router.delete("/users/:id", authorization_1.authenticateToken, function (req, res) {
+    return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        if (req.user.id == req.params.id) {
+            userStub_2.default.stub.deleteUser({ id: req.params.id }, (err, data) => {
+                if (!err) {
+                    res.send(data);
+                }
+                res.status(500).send({ error: "user creation failed" });
+            });
+        }
+        else {
+            res.status(400).send({ error: "Token Invalid" });
         }
     });
 });

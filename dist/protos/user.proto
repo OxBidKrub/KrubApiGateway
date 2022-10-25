@@ -23,13 +23,13 @@ service UserService {
 
   message TopupReq{
     string id = 1;
-    uint32 amount = 2;
+    uint64 amount = 2;
   }
 
   message PayReq{
     string payerId = 1;
     string payeeId = 2;
-    uint32 amount = 3;
+    uint64 amount = 3;
   }
 
   message Email{
@@ -45,7 +45,7 @@ service UserService {
     string password = 6;
     string firstName = 7;
     string lastName = 8;
-    uint32 money = 9;
+    uint64 money = 9;
     string phoneNumber = 10;
     string address = 11;
   }
@@ -95,7 +95,7 @@ message CreateUserReq{
     string password = 3;
     string firstName = 4;
     string lastName = 5;
-    uint32 money = 6;
+    uint64 money = 6;
     string phoneNumber = 7;
     string address = 8;
 }

@@ -47,13 +47,13 @@ router.post("/users/topup", authenticateToken, async (req: any, res) => {
         { id: req.user.id, amount: req.body.amount },
         (err, data) => {
           if (!err) {
-            res.send({ data });
+            res.send(data);
           }
           res.status(500).send(err);
         }
       );
     } catch (error) {
-      res.status(400).send("Topup not successful");
+      res.status(400).send("Topup unsuccessful");
     }
   } else {
     res.status(400).send("Invalid Token");
@@ -70,9 +70,9 @@ router.post("/users/pay", authenticateToken, async (req: any, res) => {
       },
       (err, data) => {
         if (!err) {
-          res.send({ data });
+          res.send(data);
         }
-        res.status(500).send(err);
+        res.status(500).send({ error: "top up unsuccessfull" });
       }
     );
   } else {
@@ -80,8 +80,19 @@ router.post("/users/pay", authenticateToken, async (req: any, res) => {
   }
 });
 
-router.get("/users/:id", async function (req: any, res: any) {
+router.get("/users/:id", authenticateToken,async function (req: any, res: any) {
   const user = await getUserById(req.params.id);
+  userStub.stub.getUserById(
+    { id: req.body.id },
+    async (err, data) => {
+      if (!err) {
+        const nonSenstive = (({ username, firstName, lastName, money, email, phoneNumber,address }) => ({ username, firstName, lastName, money, email, phoneNumber,address }))(data);
+        
+        res.send(nonSenstive);
+      }
+      res.status(500).send(err);
+    }
+  );
   // const nonSensitiveData = {firstName:user.firstName,lastName:user.lastName}
   return res.send(user);
 });
@@ -101,7 +112,7 @@ router.post("/users/login", async (req, res) => {
     );
   } catch (error) {
     console.log(error);
-    res.status(500).send(error);
+   // res.status(500).send(error);
   }
 });
 
@@ -111,25 +122,54 @@ router.post("/users", async function (req: any, res: any) {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const tempUser = { ...req.body, password: hashedPassword };
-
-    const results = await createUser(tempUser);
-    return res.send(results);
+   console.log(tempUser)
+    
+    userStub.stub.createUser(tempUser, (err, data) => {
+      if (!err) {
+        res.send(data);
+      }
+      res.status(500).send({ error: "user creation failed" });
+    });
   } catch (error) {
-    res.status(500).send(error.code || error);
+    res.status(500).send("error");
   }
 });
 
-router.put("/users/:id", async function (req: any, res: any) {
-  const results = await updateUser({ id: req.params.id, ...req.body });
-  return res.send(results);
-});
+router.put(
+  "/users/:id",
+  authenticateToken,
+  async function (req: any, res: any) {
+    if (req.user.id == req.params.id) {
+      userStub.stub.updateUser(
+        { id: req.params.id, ...req.body },
+        (err, data) => {
+          if (!err) {
+            res.send(data);
+          }
+          res.status(500).send({ error: "user creation failed" });
+        }
+      );
+    }
+    else{
+      res.status(400).send({error:"Token Invalid"})
+    }
+  }
+);
 
-router.delete("/users/:id", async function (req: any, res: any) {
-  try {
-    const results = await deleteUser({ id: req.params.id });
-    res.send("success");
-  } catch (error) {
-    res.status(500).send("error");
+router.delete("/users/:id",authenticateToken, async function (req: any, res: any) {
+  if (req.user.id == req.params.id) {
+    userStub.stub.deleteUser(
+      { id: req.params.id },
+      (err, data) => {
+        if (!err) {
+          res.send(data);
+        }
+        res.status(500).send({ error: "user creation failed" });
+      }
+    );
+  }
+  else{
+    res.status(400).send({error:"Token Invalid"})
   }
 });
 export = router;

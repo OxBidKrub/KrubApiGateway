@@ -28,7 +28,6 @@ const loginLogic = (user, password) => tslib_1.__awaiter(void 0, void 0, void 0,
         }
     }
     catch (error) {
-        throw new Error("error");
     }
 });
 exports.loginLogic = loginLogic;

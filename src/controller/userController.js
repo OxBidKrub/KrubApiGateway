@@ -25,7 +25,7 @@ const loginLogic = async (user, password) => {
         
       }
     } catch (error) {
-      throw new Error("error");
+      
       
     }
   }
