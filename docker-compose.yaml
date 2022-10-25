@@ -1,5 +1,5 @@
 services:
-  db:
+  gatwaydb:
     image: mysql:5.7
     restart: always
     networks:
@@ -24,19 +24,17 @@ services:
     volumes:
       - my-db:/var/lib/mysql
 # Names our volume
-  service:
+  gatewayservice:
     build: ./
-    container_name: BidKrubUserService
+    container_name: BidKrubApiGateway
     env_file:
       - ".env"  
     environment:
       PORT: ${SERVICE_PORT}
     ports:
       - ${SERVICE_PORT}:${SERVICE_PORT}
-      - '50051:50051'
     expose:
       - ${SERVICE_PORT}
-      - '50051'
     networks:
       - lan
     restart: "unless-stopped"

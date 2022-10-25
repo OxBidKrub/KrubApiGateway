@@ -1,6 +1,6 @@
 import { myDataSource } from "../app-data-source";
 import { User } from "../entity/user.entity";
-
+import { getListUsers } from "../stub"
 const getAllUsers = async () => await myDataSource.getRepository(User).find();
 
 const getUserById = async (id: string) =>
