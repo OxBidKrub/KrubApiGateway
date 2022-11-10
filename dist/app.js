@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const express_1 = tslib_1.__importDefault(require("express"));
+const bid_1 = tslib_1.__importDefault(require("./router/bid"));
 const user_1 = tslib_1.__importDefault(require("./router/user"));
 const auctionItem_1 = tslib_1.__importDefault(require("./router/auctionItem"));
 const PORT = process.env.PORT || 9005;
@@ -23,6 +24,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(user_1.default);
 app.use(auctionItem_1.default);
+app.use(bid_1.default);
 app.listen(PORT, () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     console.log("server listening on PORT : " + PORT);
 }));

@@ -1,6 +1,6 @@
 import express from "express";
 import userStub from "repo/userStub";
-
+import bidRoute from "./router/bid"
 import userRoute from "./router/user";
 import auctionItemRoute from "./router/auctionItem"
 const PORT = process.env.PORT || 9005;
@@ -25,7 +25,7 @@ app.use(express.json());
 
 app.use(userRoute);
 app.use(auctionItemRoute);
-
+app.use(bidRoute)
 app.listen(PORT, async () => {
   console.log("server listening on PORT : " + PORT);
  
