@@ -6,6 +6,7 @@ const bcrypt_1 = tslib_1.__importDefault(require("bcrypt"));
 const userStub_1 = tslib_1.__importDefault(require("../repo/userStub"));
 const userController_1 = require("../controller/userController");
 const userStub_2 = tslib_1.__importDefault(require("../repo/userStub"));
+const publishReview_1 = require("../util/publishReview");
 const { getAllUsers, topup, pay, getUserById, createUser, updateUser, deleteUser, getUserByEmail, } = userStub_1.default;
 var router = express_1.default.Router();
 router.get("/users", authorization_1.authenticateToken, function (req, res) {
@@ -141,6 +142,19 @@ router.delete("/users/:id", authorization_1.authenticateToken, function (req, re
         }
         else {
             res.status(400).send({ error: "Token Invalid" });
+        }
+    });
+});
+router.post("/reviews", function (req, res) {
+    return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        try {
+            const data = req.body;
+            console.log(data);
+            yield (0, publishReview_1.PublishMessage)(data);
+            res.send("success");
+        }
+        catch (error) {
+            res.status(500).send("error");
         }
     });
 });

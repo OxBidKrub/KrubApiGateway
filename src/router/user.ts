@@ -157,12 +157,6 @@ router.put(
   }
 );
 
-router.delete("/users/:id", async function (req: any, res: any) {
-  try {
-    const results = await deleteUser({ id: req.params.id });
-    res.send("success");
-  } catch (error) {
-    res.status(500).send("error");
 router.delete("/users/:id",authenticateToken, async function (req: any, res: any) {
   if (req.user.id == req.params.id) {
     userStub.stub.deleteUser(

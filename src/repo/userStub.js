@@ -9,9 +9,11 @@ var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   defaults: true,
   oneofs: true,
 });
+const USER_SERVICE_HOST = process.env.USER_SERVICE_HOST || "userservice"
+const USER_SERVICE_PORT = process.env.USER_SERVICE_PORT || "50051"
 var UserService = grpc.loadPackageDefinition(packageDefinition).UserService;
 var stub = new UserService.UserService(
-  "userservice:50051",
+  `${USER_SERVICE_HOST}:${USER_SERVICE_PORT}`,
   grpc.credentials.createInsecure()
 );
 

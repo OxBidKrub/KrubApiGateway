@@ -2,8 +2,8 @@ import express from "express";
 import userStub from "repo/userStub";
 
 import userRoute from "./router/user";
-
-const PORT = process.env.PORT;
+import auctionItemRoute from "./router/auctionItem"
+const PORT = process.env.PORT || 9005;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 //express
@@ -24,6 +24,7 @@ const app = express();
 app.use(express.json());
 
 app.use(userRoute);
+app.use(auctionItemRoute);
 
 app.listen(PORT, async () => {
   console.log("server listening on PORT : " + PORT);
