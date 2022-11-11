@@ -23,10 +23,9 @@ router.get("/users", authenticateToken, async function (req: any, res: any) {
   userStub.stub.getAllUsers(null, (err, data) => {
     if (!err) {
       res.send(data.users);
-    }else{
+    } else {
       res.status(500).send(err);
     }
-    
   });
 });
 
@@ -38,8 +37,9 @@ router.get("/users/getMyInfo", authenticateToken, (req: any, res) => {
   userStub.stub.getUserById({ id: req.user.id }, (err, data) => {
     if (!err) {
       res.send({ data });
+    } else {
+      res.status(500).send(err);
     }
-    res.status(500).send(err);
   });
 });
 
@@ -51,8 +51,9 @@ router.post("/users/topup", authenticateToken, async (req: any, res) => {
         (err, data) => {
           if (!err) {
             res.send(data);
+          } else {
+            res.status(500).send(err);
           }
-          res.status(500).send(err);
         }
       );
     } catch (error) {
@@ -74,8 +75,9 @@ router.post("/users/pay", authenticateToken, async (req: any, res) => {
       (err, data) => {
         if (!err) {
           res.send(data);
+        }else{
+          res.status(500).send({ error: "top up unsuccessfull" });
         }
-        res.status(500).send({ error: "top up unsuccessfull" });
       }
     );
   } else {
@@ -83,22 +85,40 @@ router.post("/users/pay", authenticateToken, async (req: any, res) => {
   }
 });
 
-router.get("/users/:id", authenticateToken,async function (req: any, res: any) {
-  const user = await getUserById(req.params.id);
-  userStub.stub.getUserById(
-    { id: req.body.id },
-    async (err, data) => {
+router.get(
+  "/users/:id",
+  authenticateToken,
+  async function (req: any, res: any) {
+    const user = await getUserById(req.params.id);
+    userStub.stub.getUserById({ id: req.body.id }, async (err, data) => {
       if (!err) {
-        const nonSenstive = (({ username, firstName, lastName, money, email, phoneNumber,address }) => ({ username, firstName, lastName, money, email, phoneNumber,address }))(data);
-        
+        const nonSenstive = (({
+          username,
+          firstName,
+          lastName,
+          money,
+          email,
+          phoneNumber,
+          address,
+        }) => ({
+          username,
+          firstName,
+          lastName,
+          money,
+          email,
+          phoneNumber,
+          address,
+        }))(data);
+
         res.send(nonSenstive);
+      }else{
+        res.status(500).send(err);
       }
-      res.status(500).send(err);
-    }
-  );
-  // const nonSensitiveData = {firstName:user.firstName,lastName:user.lastName}
-  return res.send(user);
-});
+    });
+    // const nonSensitiveData = {firstName:user.firstName,lastName:user.lastName}
+    //return res.send(user);
+  }
+);
 
 router.post("/users/login", async (req, res) => {
   try {
@@ -109,13 +129,14 @@ router.post("/users/login", async (req, res) => {
           const access = await loginLogic(data, req.body.password);
           console.log(access);
           res.send(access);
+        } else {
+          res.status(500).send(err);
         }
-        res.status(500).send(err);
       }
     );
   } catch (error) {
     console.log(error);
-   // res.status(500).send(error);
+    // res.status(500).send(error);
   }
 });
 
@@ -125,13 +146,14 @@ router.post("/users", async function (req: any, res: any) {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const tempUser = { ...req.body, password: hashedPassword };
-   console.log(tempUser)
-    
+    console.log(tempUser);
+
     userStub.stub.createUser(tempUser, (err, data) => {
       if (!err) {
         res.send(data);
+      } else {
+        res.status(500).send({ error: "user creation failed" });
       }
-      res.status(500).send({ error: "user creation failed" });
     });
   } catch (error) {
     res.status(500).send("error");
@@ -148,33 +170,34 @@ router.put(
         (err, data) => {
           if (!err) {
             res.send(data);
+          }else{
+            res.status(500).send({ error: "user creation failed" });
           }
-          res.status(500).send({ error: "user creation failed" });
         }
       );
-    }
-    else{
-      res.status(400).send({error:"Token Invalid"})
+    } else {
+      res.status(400).send({ error: "Token Invalid" });
     }
   }
 );
 
-router.delete("/users/:id",authenticateToken, async function (req: any, res: any) {
-  if (req.user.id == req.params.id) {
-    userStub.stub.deleteUser(
-      { id: req.params.id },
-      (err, data) => {
+router.delete(
+  "/users/:id",
+  authenticateToken,
+  async function (req: any, res: any) {
+    if (req.user.id == req.params.id) {
+      userStub.stub.deleteUser({ id: req.params.id }, (err, data) => {
         if (!err) {
           res.send(data);
+        }else{
+          res.status(500).send({ error: "user creation failed" });
         }
-        res.status(500).send({ error: "user creation failed" });
-      }
-    );
+      });
+    } else {
+      res.status(400).send({ error: "Token Invalid" });
+    }
   }
-  else{
-    res.status(400).send({error:"Token Invalid"})
-  }
-});
+);
 
 router.post("/reviews", async function (req: Request, res: Response) {
   try {
