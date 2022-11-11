@@ -23,8 +23,10 @@ router.get("/users", authenticateToken, async function (req: any, res: any) {
   userStub.stub.getAllUsers(null, (err, data) => {
     if (!err) {
       res.send(data.users);
+    }else{
+      res.status(500).send(err);
     }
-    res.status(500).send(err);
+    
   });
 });
 
