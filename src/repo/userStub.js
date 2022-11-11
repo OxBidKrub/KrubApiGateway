@@ -14,7 +14,7 @@ const USER_SERVICE_PORT = process.env.USER_SERVICE_PORT || "50051"
 var UserService = grpc.loadPackageDefinition(packageDefinition).UserService;
 var stub = new UserService.UserService(
   `${USER_SERVICE_HOST}:${USER_SERVICE_PORT}`,
-  grpc.credentials.createInsecure()
+  grpc.credentials.createSsl()
 );
 
 const getAllUsers = (callback)  => {
