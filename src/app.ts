@@ -3,6 +3,7 @@ import userStub from "repo/userStub";
 import bidRoute from "./router/bid"
 import userRoute from "./router/user";
 import auctionItemRoute from "./router/auctionItem"
+import cors from "cors" 
 const PORT = process.env.PORT || 9005;
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -21,6 +22,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 //   });
 
 const app = express();
+app.use(cors())
 app.use(express.json());
 
 app.use(userRoute);
