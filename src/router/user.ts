@@ -75,7 +75,7 @@ router.post("/users/pay", authenticateToken, async (req: any, res) => {
       (err, data) => {
         if (!err) {
           res.send(data);
-        }else{
+        } else {
           res.status(500).send({ error: "top up unsuccessfull" });
         }
       }
@@ -111,7 +111,7 @@ router.get(
         }))(data);
 
         res.send(nonSenstive);
-      }else{
+      } else {
         res.status(500).send(err);
       }
     });
@@ -122,13 +122,11 @@ router.get(
 
 router.post("/users/login", async (req, res) => {
   try {
-    userStub.stub.getUserByEmail(
-      { email: req.body.email },
+    userStub.stub.login(
+      { email: req.body.email, password: req.body.password },
       async (err, data) => {
         if (!err) {
-          const access = await loginLogic(data, req.body.password);
-          console.log(access);
-          res.send(access);
+          res.send(data);
         } else {
           res.status(500).send(err);
         }
@@ -136,7 +134,7 @@ router.post("/users/login", async (req, res) => {
     );
   } catch (error) {
     console.log(error);
-    // res.status(500).send(error);
+    res.status(500).send(error);
   }
 });
 
@@ -153,8 +151,8 @@ router.post("/users", async function (req: any, res: any) {
       money: req.body.money,
       password: hashedPassword,
       phoneNumber: req.body.phoneNumber,
-      username: req.body.username
-  }
+      username: req.body.username,
+    };
     console.log(tempUser);
 
     userStub.stub.createUser(tempUser, (err, data) => {
@@ -179,7 +177,7 @@ router.put(
         (err, data) => {
           if (!err) {
             res.send(data);
-          }else{
+          } else {
             res.status(500).send({ error: "user creation failed" });
           }
         }
@@ -198,7 +196,7 @@ router.delete(
       userStub.stub.deleteUser({ id: req.params.id }, (err, data) => {
         if (!err) {
           res.send(data);
-        }else{
+        } else {
           res.status(500).send({ error: "user creation failed" });
         }
       });
