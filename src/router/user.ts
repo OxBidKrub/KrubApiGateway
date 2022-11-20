@@ -146,7 +146,7 @@ router.post("/users", async function (req: any, res: any) {
     const tempUser = {
       username: req.body.username,
       email: req.body.email,
-      password: hashedPassword,
+      password: req.body.password,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       money: req.body.money,

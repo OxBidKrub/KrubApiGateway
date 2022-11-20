@@ -5,6 +5,7 @@ var protoLoader = require("@grpc/proto-loader");
 var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
   defaults: true,
+  longs: String,
 });
 const USER_SERVICE_HOST = process.env.USER_SERVICE_HOST || "userservice"
 const USER_SERVICE_PORT = process.env.USER_SERVICE_PORT || "50051"
