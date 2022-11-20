@@ -147,7 +147,7 @@ router.post("/users", async function (req: any, res: any) {
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
-      firstName: req.body.fiÏrstName,
+      firstName: req.body.firstName,
       lastName: req.body.lastName,
       money: req.body.money,
       phoneNumber: req.body.phoneNumber,
