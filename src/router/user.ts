@@ -144,14 +144,14 @@ router.post("/users", async function (req: any, res: any) {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const tempUser = {
-      address: req.body.address,
+      username: req.body.username,
       email: req.body.email,
-      firstName: req.body.firstName,
+      password: hashedPassword,
+      firstName: req.body.fiÏrstName,
       lastName: req.body.lastName,
       money: req.body.money,
-      password: hashedPassword,
       phoneNumber: req.body.phoneNumber,
-      username: req.body.username,
+      address: req.body.address,
     };
     console.log(tempUser);
 
