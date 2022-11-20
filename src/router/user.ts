@@ -145,7 +145,16 @@ router.post("/users", async function (req: any, res: any) {
   try {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    const tempUser = { ...req.body, password: hashedPassword };
+    const tempUser = {
+      address: req.body.address,
+      email: req.body.email,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      money: req.body.money,
+      password: hashedPassword,
+      phoneNumber: req.body.phoneNumber,
+      username: req.body.username
+  }
     console.log(tempUser);
 
     userStub.stub.createUser(tempUser, (err, data) => {
