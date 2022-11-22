@@ -141,8 +141,6 @@ router.post("/users/login", async (req, res) => {
 router.post("/users", async function (req: any, res: any) {
   console.log(req.body);
   try {
-    const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const tempUser = {
       username: req.body.username,
       email: req.body.email,
