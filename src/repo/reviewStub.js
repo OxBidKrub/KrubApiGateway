@@ -13,8 +13,8 @@ const REVIEW_SERVICE_PORT = process.env.REVIEW_SERVICE_PORT || "8005";
 var ReviewService = grpc.loadPackageDefinition(packageDefinition).ReviewService;
 var stub = new ReviewService.ReviewService(
   `${REVIEW_SERVICE_HOST}:${REVIEW_SERVICE_PORT}`,
-  grpc.credentials.createInsecure()
-  //   grpc.credentials.createSsl()
+  // grpc.credentials.createInsecure()
+     grpc.credentials.createSsl()
 );
 
 const getAllReviews = (uid) => {
