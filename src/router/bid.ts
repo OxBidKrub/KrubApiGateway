@@ -2,7 +2,7 @@ import express from "express";
 import { authenticateToken } from "../middleware/authorization";
 import { Request, Response } from "express";
 import axios from "axios";
-import userStub from "repo/userStub";
+import userStub from "../repo/userStub";
 const BIDAUCTION_HOST = process.env.BIDAUCTION_HOST;
 const BIDAUCTION_PORT = process.env.BIDAUCTION_PORT;
 const { createProxyMiddleware } = require("http-proxy-middleware");
