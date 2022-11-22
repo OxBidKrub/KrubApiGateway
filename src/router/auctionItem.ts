@@ -41,6 +41,42 @@ router.get(
   }
 );
 
+router.get(
+  "/auction-items/itemByOwner",
+  authenticateToken,
+  async function (req: Request, res: Response) {
+    axios
+      .get(
+        `${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items/itemByOwner`,
+        {
+          headers: { authorization: req.get("authorization") },
+        }
+      )
+      .then((data) => res.json(data.data))
+      .catch((err) => {
+        res.status(err.response.status).send(err.response.data);
+      });
+  }
+);
+
+router.get(
+  "/auction-items/itemByBidder",
+  authenticateToken,
+  async function (req: Request, res: Response) {
+    axios
+      .get(
+        `${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items/itemByBidder`,
+        {
+          headers: { authorization: req.get("authorization") },
+        }
+      )
+      .then((data) => res.json(data.data))
+      .catch((err) => {
+        res.status(err.response.status).send(err.response.data);
+      });
+  }
+);
+
 router.post(
   "/auction-items",
   authenticateToken,
