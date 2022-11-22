@@ -89,8 +89,8 @@ router.get(
   "/users/:id",
   authenticateToken,
   async function (req: any, res: any) {
-    const user = await getUserById(req.params.id);
-    userStub.stub.getUserById({ id: req.body.id }, async (err, data) => {
+    //const user = await getUserById(req.params.id);
+    userStub.stub.getUserById({ id: req.params.id }, async (err, data) => {
       if (!err) {
         const nonSenstive = (({
           username,
