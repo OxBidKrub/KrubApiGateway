@@ -9,7 +9,7 @@ import { PublishMessage } from "../util/publishReview";
 
 const { getAllReviews } = reviewRepo;
 var router = express.Router();
-router.get("/review/:id", async function (req: Request, res: Response) {
+router.get("/review/:id",authenticateToken, async function (req: Request, res: Response) {
   //   console.log("REVIEWSTUB", reviewStub);
   reviewStub.stub.getReviewById({ id: req.params.id }, (err, data) => {
     console.log("DATA == > ", data, "ERR ==> ", err);
@@ -21,7 +21,7 @@ router.get("/review/:id", async function (req: Request, res: Response) {
   });
 });
 
-router.post("/reviews", async function (req: Request, res: Response) {
+router.post("/reviews",authenticateToken, async function (req: Request, res: Response) {
   try {
     const data = req.body;
     console.log(data);
