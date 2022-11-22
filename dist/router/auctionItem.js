@@ -14,7 +14,7 @@ var router = express_1.default.Router();
 // router.use('/auction-items', auctionItemProxy);
 router.get("/auction-items", (req, res, next) => {
     axios_1.default
-        .get(`http://${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items`, {
+        .get(`${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items`, {
         headers: { authorization: req.get("authorization") },
     })
         .then((data) => res.json(data.data))
@@ -23,7 +23,7 @@ router.get("/auction-items", (req, res, next) => {
 router.get("/auction-items/:id", authorization_1.authenticateToken, function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         axios_1.default
-            .get(`http://${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items/${req.params.id}`, {
+            .get(`${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items/${req.params.id}`, {
             headers: { authorization: req.get("authorization") },
         })
             .then((data) => res.json(data.data))
@@ -35,7 +35,7 @@ router.get("/auction-items/:id", authorization_1.authenticateToken, function (re
 router.post("/auction-items", authorization_1.authenticateToken, function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         axios_1.default
-            .post(`http://${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items`, req.body, {
+            .post(`${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items`, req.body, {
             headers: { authorization: req.get("authorization") },
         })
             .then((data) => res.json(data.data))
@@ -47,7 +47,7 @@ router.post("/auction-items", authorization_1.authenticateToken, function (req, 
 router.put("/auction-items/:id", function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         axios_1.default
-            .put(`http://${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items/${req.params.id}`, req.body, {
+            .put(`${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items/${req.params.id}`, req.body, {
             headers: { authorization: req.get("authorization") },
         })
             .then((data) => res.json(data.data))
@@ -59,7 +59,7 @@ router.put("/auction-items/:id", function (req, res) {
 router.delete("/auction-items/:id", function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         axios_1.default
-            .delete(`http://${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items/${req.params.id}`, {
+            .delete(`${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/auction-items/${req.params.id}`, {
             headers: { authorization: req.get("authorization") },
         })
             .then((data) => res.json(data.data))

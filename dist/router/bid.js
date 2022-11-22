@@ -10,7 +10,7 @@ var router = express_1.default.Router();
 router.get("/bids", authorization_1.authenticateToken, function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         axios_1.default
-            .get(`http://${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/bids`, {
+            .get(`${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/bids`, {
             headers: { authorization: req.get("authorization") },
         })
             .then((data) => res.json(data.data))
@@ -20,7 +20,7 @@ router.get("/bids", authorization_1.authenticateToken, function (req, res) {
 router.get("/bids/:id", authorization_1.authenticateToken, function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         axios_1.default
-            .get(`http://${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/bids/${req.params.id}`, {
+            .get(`${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/bids/${req.params.id}`, {
             headers: { authorization: req.get("authorization") },
         })
             .then((data) => res.json(data.data))
@@ -32,7 +32,7 @@ router.get("/bids/:id", authorization_1.authenticateToken, function (req, res) {
 router.post("/bids", authorization_1.authenticateToken, function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         axios_1.default
-            .post(`http://${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/bids`, req.body, {
+            .post(`${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/bids`, req.body, {
             headers: { authorization: req.get("authorization") },
         })
             .then((data) => res.json(data.data))
@@ -44,7 +44,7 @@ router.post("/bids", authorization_1.authenticateToken, function (req, res) {
 router.put("/bids/:id", authorization_1.authenticateToken, function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         axios_1.default
-            .put(`http://${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/bids/${req.params.id}`, req.body, {
+            .put(`${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/bids/${req.params.id}`, req.body, {
             headers: { authorization: req.get("authorization") },
         })
             .then((data) => res.json(data.data))
@@ -56,7 +56,7 @@ router.put("/bids/:id", authorization_1.authenticateToken, function (req, res) {
 router.delete("/bids/:id", authorization_1.authenticateToken, function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         axios_1.default
-            .delete(`http://${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/bids/${req.params.id}`, {
+            .delete(`${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/bids/${req.params.id}`, {
             headers: { authorization: req.get("authorization") },
         })
             .then((data) => res.json(data.data))

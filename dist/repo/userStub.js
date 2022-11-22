@@ -6,15 +6,13 @@ var grpc = require("@grpc/grpc-js");
 var protoLoader = require("@grpc/proto-loader");
 var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     keepCase: true,
-    longs: String,
-    enums: String,
     defaults: true,
-    oneofs: true,
+    longs: String,
 });
 const USER_SERVICE_HOST = process.env.USER_SERVICE_HOST || "userservice";
 const USER_SERVICE_PORT = process.env.USER_SERVICE_PORT || "50051";
 var UserService = grpc.loadPackageDefinition(packageDefinition).UserService;
-var stub = new UserService.UserService(`${USER_SERVICE_HOST}:${USER_SERVICE_PORT}`, grpc.credentials.createInsecure());
+var stub = new UserService.UserService(`${USER_SERVICE_HOST}:${USER_SERVICE_PORT}`, grpc.credentials.createSsl());
 const getAllUsers = (callback) => {
     var call = stub.getAllUsers({});
     const users = [];

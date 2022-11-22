@@ -4,7 +4,6 @@ const express_1 = tslib_1.__importDefault(require("express"));
 const authorization_1 = require("../middleware/authorization");
 const bcrypt_1 = tslib_1.__importDefault(require("bcrypt"));
 const userStub_1 = tslib_1.__importDefault(require("../repo/userStub"));
-const userController_1 = require("../controller/userController");
 const userStub_2 = tslib_1.__importDefault(require("../repo/userStub"));
 const publishReview_1 = require("../util/publishReview");
 const { getAllUsers, topup, pay, getUserById, createUser, updateUser, deleteUser, getUserByEmail, } = userStub_1.default;
@@ -15,7 +14,9 @@ router.get("/users", authorization_1.authenticateToken, function (req, res) {
             if (!err) {
                 res.send(data.users);
             }
-            res.status(500).send(err);
+            else {
+                res.status(500).send(err);
+            }
         });
     });
 });
@@ -27,7 +28,9 @@ router.get("/users/getMyInfo", authorization_1.authenticateToken, (req, res) => 
         if (!err) {
             res.send({ data });
         }
-        res.status(500).send(err);
+        else {
+            res.status(500).send(err);
+        }
     });
 });
 router.post("/users/topup", authorization_1.authenticateToken, (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
@@ -37,7 +40,9 @@ router.post("/users/topup", authorization_1.authenticateToken, (req, res) => tsl
                 if (!err) {
                     res.send(data);
                 }
-                res.status(500).send(err);
+                else {
+                    res.status(500).send(err);
+                }
             });
         }
         catch (error) {
@@ -58,7 +63,9 @@ router.post("/users/pay", authorization_1.authenticateToken, (req, res) => tslib
             if (!err) {
                 res.send(data);
             }
-            res.status(500).send({ error: "top up unsuccessfull" });
+            else {
+                res.status(500).send({ error: "top up unsuccessfull" });
+            }
         });
     }
     else {
@@ -70,29 +77,39 @@ router.get("/users/:id", authorization_1.authenticateToken, function (req, res) 
         const user = yield getUserById(req.params.id);
         userStub_2.default.stub.getUserById({ id: req.body.id }, (err, data) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!err) {
-                const nonSenstive = (({ username, firstName, lastName, money, email, phoneNumber, address }) => ({ username, firstName, lastName, money, email, phoneNumber, address }))(data);
+                const nonSenstive = (({ username, firstName, lastName, money, email, phoneNumber, address, }) => ({
+                    username,
+                    firstName,
+                    lastName,
+                    money,
+                    email,
+                    phoneNumber,
+                    address,
+                }))(data);
                 res.send(nonSenstive);
             }
-            res.status(500).send(err);
+            else {
+                res.status(500).send(err);
+            }
         }));
         // const nonSensitiveData = {firstName:user.firstName,lastName:user.lastName}
-        return res.send(user);
+        //return res.send(user);
     });
 });
 router.post("/users/login", (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
-        userStub_2.default.stub.getUserByEmail({ email: req.body.email }, (err, data) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        userStub_2.default.stub.login({ email: req.body.email, password: req.body.password }, (err, data) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
             if (!err) {
-                const access = yield (0, userController_1.loginLogic)(data, req.body.password);
-                console.log(access);
-                res.send(access);
+                res.send(data);
             }
-            res.status(500).send(err);
+            else {
+                res.status(500).send(err);
+            }
         }));
     }
     catch (error) {
         console.log(error);
-        // res.status(500).send(error);
+        res.status(500).send(error);
     }
 }));
 router.post("/users", function (req, res) {
@@ -101,13 +118,24 @@ router.post("/users", function (req, res) {
         try {
             const salt = yield bcrypt_1.default.genSalt();
             const hashedPassword = yield bcrypt_1.default.hash(req.body.password, salt);
-            const tempUser = Object.assign(Object.assign({}, req.body), { password: hashedPassword });
+            const tempUser = {
+                username: req.body.username,
+                email: req.body.email,
+                password: req.body.password,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                money: req.body.money,
+                phoneNumber: req.body.phoneNumber,
+                address: req.body.address,
+            };
             console.log(tempUser);
             userStub_2.default.stub.createUser(tempUser, (err, data) => {
                 if (!err) {
                     res.send(data);
                 }
-                res.status(500).send({ error: "user creation failed" });
+                else {
+                    res.status(500).send({ error: "user creation failed" });
+                }
             });
         }
         catch (error) {
@@ -122,7 +150,9 @@ router.put("/users/:id", authorization_1.authenticateToken, function (req, res) 
                 if (!err) {
                     res.send(data);
                 }
-                res.status(500).send({ error: "user creation failed" });
+                else {
+                    res.status(500).send({ error: "user creation failed" });
+                }
             });
         }
         else {
@@ -137,7 +167,9 @@ router.delete("/users/:id", authorization_1.authenticateToken, function (req, re
                 if (!err) {
                     res.send(data);
                 }
-                res.status(500).send({ error: "user creation failed" });
+                else {
+                    res.status(500).send({ error: "user creation failed" });
+                }
             });
         }
         else {

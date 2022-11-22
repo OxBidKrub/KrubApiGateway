@@ -1,0 +1,26 @@
+syntax = "proto3";
+package ReviewService;
+service ReviewService {
+    
+    rpc getReviewById (UId) returns (ReviewList) {}
+}
+
+message Empty{
+
+}
+
+message UId {
+    string id = 1;
+}
+
+
+message Review {
+    string reviewedId = 1 ;
+    string reviewerId = 2 ; 
+    string review = 3 ; 
+    uint64 star =4 ; 
+}
+message ReviewList {
+    repeated Review reviews=1;
+}
+
