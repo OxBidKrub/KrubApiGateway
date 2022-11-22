@@ -21,6 +21,19 @@ router.get(
 );
 
 router.get(
+  "/bids/allMyBids",
+  authenticateToken,
+  async function (req: Request, res: Response) {
+    axios
+      .get(`${BIDAUCTION_HOST}:${BIDAUCTION_PORT}/bids/allMyBids`, {
+        headers: { authorization: req.get("authorization") },
+      })
+      .then((data) => res.json(data.data))
+      .catch((err) => res.status(err.response.status).send(err.response.data));
+  }
+);
+
+router.get(
   "/bids/:id",
   authenticateToken,
   async function (req: Request, res: Response) {
