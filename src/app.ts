@@ -28,7 +28,7 @@ app.use(express.json());
 
 app.use(userRoute);
 app.use(reviewRoute);
-// app.use(auctionItemRoute);
+app.use(auctionItemRoute);
 app.use(bidRoute);
 app.listen(PORT, async () => {
   console.log("server listening on PORT : " + PORT);
