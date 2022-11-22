@@ -126,7 +126,10 @@ router.post("/users/login", async (req, res) => {
       { email: req.body.email, password: req.body.password },
       async (err, data) => {
         if (!err) {
-          res.send(data);
+          if (data.accessToken.length > 20){
+            res.send(data);
+          }else{res.status(403).send(data.accessToken)}
+          
         } else {
           res.status(500).send(err);
         }
